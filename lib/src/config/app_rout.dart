@@ -12,6 +12,7 @@ class AppRouterWidget extends StatelessWidget {
           height: 100,
           width: 100,
           color: context.theme.appColors.status.error,
+          child: Text('Hellow world', style: context.theme.appTextStyle.caption),
         ),
       ),
     );
