@@ -1,6 +1,8 @@
 // ignore_for_file: unused_element
 import 'package:flutter/material.dart';
+import 'package:simply_english/main.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
+import 'package:simply_english/src/moduls/main/presentor/screens/main_screen.dart';
 
 class AppRoot extends StatefulWidget {
   const AppRoot({super.key});
@@ -18,38 +20,51 @@ class _AppRootState extends State<AppRoot> {
     (Icons.person, 'profile'),
   ];
 
+  final _screensPath = <String>[
+    '/',
+    'note',
+    'profile',
+    'statistic',
+  ];
+
+  void _loadPage(String path) {
+    Navigator.pushNamed(context, path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          decoration: BoxDecoration(
-            color: context.theme.appColors.grayscale.g0,
-            borderRadius: const BorderRadius.all(Radius.circular(24)),
-            boxShadow: [
-              BoxShadow(
-                color: context.theme.appColors.grayscale.g0,
-                offset: const Offset(0, 20),
-                blurRadius: 40,
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-              _navbarItemsData.length,
-              (index) => GestureDetector(
-                onTap: () => setState(() {
-                  _currentSelectedIndex = index;
-                }),
-                child: _NavbarItemWidget(
-                  iconData: _navbarItemsData[index].$1,
-                  label: _navbarItemsData[index].$2,
-                  isSelected: _currentSelectedIndex == index,
-                ),
+      //backgroundColor: context.theme.appColors.grayscale.g0,
+      body: const MainScreen(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(
+          color: context.theme.appColors.grayscale.g0,
+          border: Border.all(color: context.theme.appColors.grayscale.g5),
+          borderRadius: const BorderRadius.all(Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: context.theme.appColors.grayscale.g0,
+              offset: const Offset(0, 20),
+              blurRadius: 40,
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+            _navbarItemsData.length,
+            (index) => GestureDetector(
+              onTap: () => setState(() {
+                _loadPage(_screensPath[index]);
+                _currentSelectedIndex = index;
+              }),
+              child: _NavbarItemWidget(
+                iconData: _navbarItemsData[index].$1,
+                label: _navbarItemsData[index].$2,
+                isSelected: _currentSelectedIndex == index,
               ),
             ),
           ),
