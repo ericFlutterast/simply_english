@@ -39,7 +39,7 @@ flutter:
   fonts:
     - family: Outfit-Regular
       fonts:
-        - asset: fonts/static/Outfit-Regular.ttf
+        - asset:  assets/fonts/Outfit/static/Outfit-Regular.ttf
           weight: 400
        
    
