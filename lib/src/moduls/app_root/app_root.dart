@@ -1,4 +1,6 @@
 // ignore_for_file: unused_element
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
@@ -16,7 +18,7 @@ class _AppRootState extends State<AppRoot> {
   int _currentSelectedIndex = 0;
   final List<(IconData icon, String lable)> _navbarItemsData = [
     (Icons.home, 'Home'),
-    (Icons.book, 'Note'),
+    (Icons.book, 'Vocabularity'),
     (Icons.leaderboard, 'Statictic'),
     (Icons.person, 'Profile'),
   ];
