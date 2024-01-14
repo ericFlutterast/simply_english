@@ -1,5 +1,4 @@
 // ignore_for_file: unused_element
-
 import 'package:flutter/material.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
 
@@ -75,24 +74,46 @@ class _NavbarItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = context.theme;
 
-    return Container(
-      decoration: BoxDecoration(),
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            iconData,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AnimatedContainer(
+          height: 5,
+          width: isSelected ? 25 : 0,
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.only(bottom: 3),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            color: appTheme.appColors.status.success,
+          ),
+        ),
+        Stack(
+          children: [
+            AnimatedScale(
+              scale: isSelected ? 0 : 1,
+              duration: const Duration(milliseconds: 300),
+              child: Icon(
+                iconData,
+                color: appTheme.appColors.grayscale.g5,
+              ),
+            ),
+            AnimatedScale(
+              scale: isSelected ? 1 : 0,
+              duration: const Duration(milliseconds: 300),
+              child: Icon(
+                iconData,
+                color: appTheme.appColors.grayscale.g6,
+              ),
+            ),
+          ],
+        ),
+        Text(
+          label,
+          style: appTheme.appTextStyle.caption.copyWith(
             color: isSelected ? appTheme.appColors.grayscale.g6 : appTheme.appColors.grayscale.g5,
           ),
-          Text(
-            label,
-            style: appTheme.appTextStyle.caption.copyWith(
-              color: isSelected ? appTheme.appColors.grayscale.g6 : appTheme.appColors.grayscale.g5,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
