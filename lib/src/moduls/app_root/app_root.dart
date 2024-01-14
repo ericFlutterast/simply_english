@@ -1,11 +1,12 @@
 // ignore_for_file: unused_element
 import 'package:flutter/material.dart';
-import 'package:simply_english/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
-import 'package:simply_english/src/moduls/main/presentor/screens/main_screen.dart';
 
 class AppRoot extends StatefulWidget {
-  const AppRoot({super.key});
+  final Widget child;
+
+  const AppRoot({super.key, required this.child});
 
   @override
   State<AppRoot> createState() => _AppRootState();
@@ -14,28 +15,25 @@ class AppRoot extends StatefulWidget {
 class _AppRootState extends State<AppRoot> {
   int _currentSelectedIndex = 0;
   final List<(IconData icon, String lable)> _navbarItemsData = [
-    (Icons.home, 'home'),
-    (Icons.book, 'note'),
-    (Icons.leaderboard, 'statictic'),
-    (Icons.person, 'profile'),
+    (Icons.home, 'Home'),
+    (Icons.book, 'Note'),
+    (Icons.leaderboard, 'Statictic'),
+    (Icons.person, 'Profile'),
   ];
 
   final _screensPath = <String>[
     '/',
-    'note',
-    'profile',
-    'statistic',
+    '/note',
+    '/profile',
+    '/statistic',
   ];
 
-  void _loadPage(String path) {
-    Navigator.pushNamed(context, path);
-  }
+  void _getOtherTabs(String location) => context.go(location);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: context.theme.appColors.grayscale.g0,
-      body: const MainScreen(),
+      body: widget.child,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -58,7 +56,7 @@ class _AppRootState extends State<AppRoot> {
             _navbarItemsData.length,
             (index) => GestureDetector(
               onTap: () => setState(() {
-                _loadPage(_screensPath[index]);
+                _getOtherTabs(_screensPath[index]);
                 _currentSelectedIndex = index;
               }),
               child: _NavbarItemWidget(
