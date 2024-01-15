@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simply_english/src/moduls/app_root/app_root.dart';
 import 'package:simply_english/src/moduls/main/presentor/screens/main_screen.dart';
-import 'package:simply_english/src/moduls/vocabularity/presentor/screens/note_screen.dart';
+import 'package:simply_english/src/moduls/vocabularity/presentor/screens/vocabularity_screen.dart';
 import 'package:simply_english/src/moduls/profile/presentor/screens/profile_screen.dart';
 import 'package:simply_english/src/moduls/statistic/presentor/screens/statistic_screen.dart';
 
