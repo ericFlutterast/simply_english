@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
 
@@ -15,19 +15,50 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final appTheme = context.theme;
 
+    // return CupertinoPageScaffold(
+    //   backgroundColor: appTheme.appColors.grayscale.g0,
+    //   child: NestedScrollView(
+    //     headerSliverBuilder: (context, innerBoxIsScrolled) {
+    //       return [
+    //         CupertinoSliverNavigationBar(
+    //           backgroundColor: appTheme.appColors.grayscale.g0.withOpacity(0.4),
+    //           border: null,
+    //           largeTitle: Text(
+    //             'Home',
+    //             style: appTheme.appTextStyle.display1,
+    //           ),
+    //           //brightness: Brightness.dark,
+    //         ),
+    //       ];
+    //     },
+    //     body: SingleChildScrollView(
+    //       child: Column(
+    //         children: [
+    //           ...List.generate(
+    //             5,
+    //             (index) {
+    //               return Container(
+    //                 height: MediaQuery.of(context).size.height / 4,
+    //                 margin: const EdgeInsets.all(16),
+    //                 decoration: BoxDecoration(
+    //                   color: appTheme.appColors.grayscale.g4,
+    //                   borderRadius: BorderRadius.circular(30),
+    //                 ),
+    //               );
+    //             },
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+
     return Scaffold(
       backgroundColor: appTheme.appColors.grayscale.g0,
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Home',
-              style: appTheme.appTextStyle.display2.copyWith(fontWeight: FontWeight.w700),
-            ),
-          ),
           ...List.generate(
             5,
             (index) {
@@ -114,12 +145,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: _scrolledUnder
-              ? Text(
-                  'Home',
+              ? Text('Home',
                   style: context.theme.appTextStyle.display1.copyWith(
                     fontWeight: FontWeight.w800,
-                  ),
-                )
+                  ))
               : null,
         ),
       ],
