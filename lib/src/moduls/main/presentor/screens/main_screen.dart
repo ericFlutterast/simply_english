@@ -1,7 +1,8 @@
-import 'dart:ui';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
+import 'package:simply_english/src/config/app_theme/theme/theme.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,62 +16,131 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final appTheme = context.theme;
 
-    // return CupertinoPageScaffold(
-    //   backgroundColor: appTheme.appColors.grayscale.g0,
-    //   child: NestedScrollView(
-    //     headerSliverBuilder: (context, innerBoxIsScrolled) {
-    //       return [
-    //         CupertinoSliverNavigationBar(
-    //           backgroundColor: appTheme.appColors.grayscale.g0.withOpacity(0.4),
-    //           border: null,
-    //           largeTitle: Text(
-    //             'Home',
-    //             style: appTheme.appTextStyle.display1,
-    //           ),
-    //           //brightness: Brightness.dark,
-    //         ),
-    //       ];
-    //     },
-    //     body: SingleChildScrollView(
-    //       child: Column(
-    //         children: [
-    //           ...List.generate(
-    //             5,
-    //             (index) {
-    //               return Container(
-    //                 height: MediaQuery.of(context).size.height / 4,
-    //                 margin: const EdgeInsets.all(16),
-    //                 decoration: BoxDecoration(
-    //                   color: appTheme.appColors.grayscale.g4,
-    //                   borderRadius: BorderRadius.circular(30),
-    //                 ),
-    //               );
-    //             },
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-
-    return Scaffold(
+    return CupertinoPageScaffold(
       backgroundColor: appTheme.appColors.grayscale.g0,
-      extendBodyBehindAppBar: true,
-      appBar: const CustomAppBar(),
-      body: ListView(
-        children: [
-          ...List.generate(
-            5,
-            (index) {
-              return Container(
-                height: MediaQuery.of(context).size.height / 4,
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: appTheme.appColors.grayscale.g4,
-                  borderRadius: BorderRadius.circular(30),
+      child: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            CupertinoSliverNavigationBar(
+              border: null,
+              backgroundColor: appTheme.appColors.grayscale.g0.withOpacity(0.6),
+              largeTitle: Text(
+                'Home',
+                style: appTheme.appTextStyle.display1,
+              ),
+              //brightness: Brightness.dark,
+            ),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const MainScreenItem(
+                title: 'Тут буду выводится последние открытые словари из раздела словарный запас',
+                child: _DictionaryFromVocabularity(),
+              ),
+              const MainScreenItem(
+                title: 'Тут могут быть какие то рекомендации',
+                child: _Recomendation(),
+              ),
+              MainScreenItem(
+                title: 'Здесь какая то статистика например сначала за неделю, а потом общая сводка',
+                child: SizedBox(
+                  height: 300,
+                  child: BarChart(
+                    BarChartData(
+                      maxY: 50,
+                      minY: 0,
+                      barGroups: [
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 30, color: Colors.pink)]),
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 15, color: Colors.pink)]),
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 21, color: Colors.pink)]),
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 17, color: Colors.pink)]),
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 10, color: Colors.pink)]),
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 11, color: Colors.pink)]),
+                        BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 19, color: Colors.pink)]),
+                      ],
+                    ),
+                  ),
                 ),
-              );
-            },
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height / 10),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MainScreenItem extends StatefulWidget {
+  final Widget child;
+  final String title;
+
+  const MainScreenItem({
+    super.key,
+    required this.child,
+    required this.title,
+  });
+
+  @override
+  State<MainScreenItem> createState() => _MainScreenItemState();
+}
+
+class _MainScreenItemState extends State<MainScreenItem> {
+  double _containerHeight = 15;
+  int _maxLines = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () => setState(() {
+              _maxLines = _maxLines == 1 ? 2 : 1;
+              _containerHeight = _containerHeight == 15 ? 30 : 15;
+            }),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: _containerHeight,
+              child: Text(
+                widget.title,
+                style: context.theme.appTextStyle.caption,
+                maxLines: _maxLines,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          widget.child,
+        ],
+      ),
+    );
+  }
+}
+
+class _Recomendation extends StatelessWidget {
+  const _Recomendation();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: context.theme.appColors.grayscale.g3,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: const Column(
+        children: [
+          _MainPageElementItem(
+            title: 'about something',
+            leading: Icon(Icons.cabin, color: Colors.white),
+          ),
+          _MainPageElementItem(
+            title: 'about something',
+            leading: Icon(Icons.car_crash, color: Colors.white),
           ),
         ],
       ),
@@ -78,94 +148,63 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
-
-  static const double _appBarHeight = 50;
-
-  @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(CustomAppBar._appBarHeight);
-}
-
-class _CustomAppBarState extends State<CustomAppBar> {
-  ScrollNotificationObserverState? _scrollNotificationObserver;
-  bool _scrolledUnder = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
-    _scrollNotificationObserver = ScrollNotificationObserver.maybeOf(context);
-    _scrollNotificationObserver?.addListener(_handleScrollNotification);
-  }
-
-  @override
-  void dispose() {
-    if (_scrollNotificationObserver != null) {
-      _scrollNotificationObserver!.removeListener(_handleScrollNotification);
-      _scrollNotificationObserver = null;
-    }
-    super.dispose();
-  }
-
-  void _handleScrollNotification(ScrollNotification notification) {
-    if (notification is ScrollUpdateNotification) {
-      final bool oldScrolledUnder = _scrolledUnder;
-      final ScrollMetrics metrics = notification.metrics;
-      switch (metrics.axisDirection) {
-        case AxisDirection.up:
-          // Scroll view is reversed
-          _scrolledUnder = metrics.extentAfter - widget.preferredSize.height > 0;
-        case AxisDirection.down:
-          _scrolledUnder = metrics.extentBefore - widget.preferredSize.height > 0;
-        case AxisDirection.right:
-        case AxisDirection.left:
-          // Scrolled under is only supported in the vertical axis, and should
-          // not be altered based on horizontal notifications of the same
-          // predicate since it could be a 2D scroller.
-          break;
-      }
-
-      if (_scrolledUnder != oldScrolledUnder) {
-        setState(() {
-          // React to a change in MaterialState.scrolledUnder
-        });
-      }
-    }
-  }
+class _DictionaryFromVocabularity extends StatelessWidget {
+  const _DictionaryFromVocabularity();
 
   @override
   Widget build(BuildContext context) {
-    Widget appBarContent = Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: _scrolledUnder
-              ? Text('Home',
-                  style: context.theme.appTextStyle.display1.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ))
-              : null,
-        ),
-      ],
-    );
-
-    if (_scrolledUnder) {
-      appBarContent = Container(
-        color: context.theme.appColors.grayscale.g3.withOpacity(0.3),
-        child: ClipRRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-            child: appBarContent,
+    return Container(
+      decoration: BoxDecoration(
+        color: context.theme.appColors.grayscale.g3,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: const Column(
+        children: [
+          _MainPageElementItem(
+            title: 'Health',
+            leading: Icon(Icons.local_hospital, color: Colors.white),
           ),
-        ),
-      );
-    }
+          _MainPageElementItem(
+            title: 'Nature',
+            leading: Icon(Icons.nature, color: Colors.white),
+          ),
+          _MainPageElementItem(
+            title: 'Harry Potter',
+            leading: Icon(Icons.clear, color: Colors.white),
+          ),
+          _MainPageElementItem(
+            title: 'things from house',
+            leading: Icon(Icons.house, color: Colors.white),
+          )
+        ],
+      ),
+    );
+  }
+}
 
-    return appBarContent;
+class _MainPageElementItem extends StatelessWidget {
+  final String title;
+  final Widget? leading;
+  final void Function()? onTap;
+
+  const _MainPageElementItem({
+    required this.title,
+    this.onTap,
+    this.leading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      leading: leading,
+      title: Text(
+        title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: context.theme.appTextStyle.body2,
+      ),
+      trailing: const Icon(Icons.chevron_right, color: Colors.white),
+    );
   }
 }
