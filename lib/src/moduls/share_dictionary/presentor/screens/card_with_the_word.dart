@@ -12,6 +12,8 @@ class CardWithTheWord extends StatelessWidget {
     final heigth = MediaQuery.of(context).size.height;
     const int wordLength = 12;
 
+    bool tempValue = false;
+
     return Scaffold(
       backgroundColor: appTheme.appColors.grayscale.g0,
       appBar: AppBar(
@@ -32,7 +34,7 @@ class CardWithTheWord extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: appTheme.relativeSize.contentPadding),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +44,7 @@ class CardWithTheWord extends StatelessWidget {
                 style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: EdgeInsets.symmetric(vertical: appTheme.relativeSize.contentPadding / 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
@@ -54,7 +56,7 @@ class CardWithTheWord extends StatelessWidget {
                           height: 5,
                           decoration: BoxDecoration(
                             color: appTheme.appColors.grayscale.g4,
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
                           ),
                         ),
                         AnimatedContainer(
@@ -63,7 +65,7 @@ class CardWithTheWord extends StatelessWidget {
                           height: 5,
                           decoration: BoxDecoration(
                             color: appTheme.appColors.status.success,
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
                           ),
                         ),
                       ],
@@ -74,19 +76,108 @@ class CardWithTheWord extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Container(
+                  padding: EdgeInsets.all(appTheme.relativeSize.contentPadding),
                   decoration: BoxDecoration(
-                    color: appTheme.appColors.grayscale.g3,
+                    color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                              color: tempValue ? appTheme.appColors.grayscale.g4 : appTheme.appColors.status.success,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          SizedBox(width: appTheme.relativeSize.contentPadding),
+                          Expanded(
+                            child: Text(
+                              'New word',
+                              style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.white,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.more_horiz,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: appTheme.relativeSize.contentPadding,
+                          top: appTheme.relativeSize.contentPadding * 2,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Name of dictionary',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
+                                ),
+                                Text(
+                                  'Word',
+                                  style: appTheme.appTextStyle.display2.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  '[Transcription]',
+                                  maxLines: 2,
+                                  style: appTheme.appTextStyle.display1,
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: appTheme.relativeSize.contentPadding / 2),
+                              child: const Icon(
+                                Icons.play_arrow,
+                                color: Colors.white,
+                                size: 45,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: appTheme.relativeSize.contentPadding),
               Expanded(
                 flex: 1,
                 child: Container(
+                  margin: EdgeInsets.symmetric(vertical: appTheme.relativeSize.contentPadding),
                   decoration: BoxDecoration(
-                    color: appTheme.appColors.grayscale.g5,
+                    color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
+                  ),
+                  child: Center(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'here will be response',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
               )
