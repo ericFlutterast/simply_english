@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:simply_english/src/config/app_theme/app_theme_provider.dart";
+import "package:simply_english/src/config/app_theme/theme/theme.dart";
 
 class CardWithTheWord extends StatelessWidget {
   const CardWithTheWord({super.key});
@@ -9,8 +10,9 @@ class CardWithTheWord extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = context.theme;
     final width = MediaQuery.of(context).size.width;
-    final heigth = MediaQuery.of(context).size.height;
+    //final heigth = MediaQuery.of(context).size.height;
     const int wordLength = 12;
+    const String translateForCurrentWord = 'Слово';
 
     bool tempValue = false;
 
@@ -74,7 +76,7 @@ class CardWithTheWord extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 4,
+                flex: 2,
                 child: Container(
                   padding: EdgeInsets.all(appTheme.relativeSize.contentPadding),
                   decoration: BoxDecoration(
@@ -159,6 +161,12 @@ class CardWithTheWord extends StatelessWidget {
                           ],
                         ),
                       ),
+                      //перевод
+                      _ShowTranslateTextWidget(
+                        translateForCurrentWord: translateForCurrentWord,
+                        appTheme: appTheme,
+                        width: width,
+                      )
                     ],
                   ),
                 ),
@@ -182,6 +190,59 @@ class CardWithTheWord extends StatelessWidget {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShowTranslateTextWidget extends StatefulWidget {
+  const _ShowTranslateTextWidget({
+    required this.translateForCurrentWord,
+    required this.appTheme,
+    required this.width,
+  });
+
+  final String translateForCurrentWord;
+  final AppTheme appTheme;
+  final double width;
+
+  @override
+  State<_ShowTranslateTextWidget> createState() => _ShowTranslateTextWidgetState();
+}
+
+class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 300,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // _animationController.forward();
+
+    return Expanded(
+      child: Center(
+        child: FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+          child: Text(
+            widget.translateForCurrentWord,
+            textAlign: TextAlign.center,
+            maxLines: 5,
+            style: widget.appTheme.appTextStyle.display3.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: widget.translateForCurrentWord.length < 20 ? widget.width / 10 : widget.width / 12,
+            ),
           ),
         ),
       ),
