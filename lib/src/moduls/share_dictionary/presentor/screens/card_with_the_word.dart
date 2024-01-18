@@ -175,18 +175,12 @@ class CardWithTheWord extends StatelessWidget {
                 flex: 1,
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: appTheme.relativeSize.contentPadding),
+                  padding: EdgeInsets.all(appTheme.relativeSize.contentPadding),
                   decoration: BoxDecoration(
                     color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
                   ),
-                  child: Center(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'here will be response',
-                        hintStyle: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  child: const InputWordField(),
                 ),
               )
             ],
@@ -194,6 +188,68 @@ class CardWithTheWord extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class InputWordField extends StatelessWidget {
+  const InputWordField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Enter your translate',
+          style: context.theme.appTextStyle.title,
+        ),
+        ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: const BorderRadius.all(Radius.circular(13)),
+          child: TextFormField(
+            cursorColor: context.theme.appColors.grayscale.g1,
+            decoration: InputDecoration(
+                filled: true,
+                hintText: 'Your word...',
+                hintStyle: TextStyle(color: context.theme.appColors.grayscale.g1),
+                fillColor: context.theme.appColors.grayscale.g6,
+                border: InputBorder.none
+                // border: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(context.theme.relativeSize.borderRadius),
+                // ),
+                ),
+          ),
+        ),
+        ElevatedButton(
+          style: ButtonStyle(
+            textStyle: MaterialStatePropertyAll(
+              context.theme.appTextStyle.body1.copyWith(color: context.theme.appColors.grayscale.g1),
+            ),
+            backgroundColor: const MaterialStatePropertyAll(Colors.white70),
+          ),
+          onPressed: () {},
+          child: Text(
+            'Enter',
+            style: context.theme.appTextStyle.body1.copyWith(
+              color: context.theme.appColors.grayscale.g1,
+              fontSize: 16,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _SelectTheRigthBord extends StatelessWidget {
+  const _SelectTheRigthBord({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
@@ -229,7 +285,7 @@ class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with
 
   @override
   Widget build(BuildContext context) {
-    // _animationController.forward();
+    //_animationController.forward();
 
     return Expanded(
       child: Center(
