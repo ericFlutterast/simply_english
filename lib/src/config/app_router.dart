@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simply_english/src/moduls/app_root/app_root.dart';
 import 'package:simply_english/src/moduls/main/presentor/screens/main_screen.dart';
+import 'package:simply_english/src/moduls/share_dictionary/presentor/screens/card_with_the_word.dart';
 import 'package:simply_english/src/moduls/vocabularity/presentor/screens/vocabularity_screen.dart';
 import 'package:simply_english/src/moduls/profile/presentor/screens/profile_screen.dart';
 import 'package:simply_english/src/moduls/statistic/presentor/screens/statistic_screen.dart';
@@ -61,9 +62,26 @@ final appRouter = GoRouter(routes: [
       ),
     ],
   ),
+  GoRoute(
+      path: '/card_with_the_word',
+      name: 'card_with_the_word',
+      pageBuilder: (context, state) {
+        return _customTransitionPage(
+          context: context,
+          state: state,
+          child: const CardWithTheWord(),
+        );
+      })
 ]);
 
 Page _customTransitionPage({required BuildContext context, required GoRouterState state, required Widget child}) {
+  if (child is CardWithTheWord) {
+    return CupertinoPage(
+      key: state.pageKey,
+      child: child,
+    );
+  }
+
   return CustomTransitionPage(
     child: child,
     key: state.pageKey,

@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
-import 'package:simply_english/src/config/app_theme/theme/theme.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -158,23 +158,25 @@ class _DictionaryFromVocabularity extends StatelessWidget {
         color: context.theme.appColors.grayscale.g3,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const Column(
+      child: Column(
         children: [
           _MainPageElementItem(
-            title: 'Health',
-            leading: Icon(Icons.local_hospital, color: Colors.white),
-          ),
+              title: 'Health',
+              leading: const Icon(Icons.local_hospital, color: Colors.white),
+              onTap: () => context.pushNamed('card_with_the_word')),
           _MainPageElementItem(
-            title: 'Nature',
-            leading: Icon(Icons.nature, color: Colors.white),
-          ),
+              title: 'Nature',
+              leading: const Icon(Icons.nature, color: Colors.white),
+              onTap: () => context.pushNamed('/card_with_the_word')),
           _MainPageElementItem(
             title: 'Harry Potter',
-            leading: Icon(Icons.clear, color: Colors.white),
+            leading: const Icon(Icons.clear, color: Colors.white),
+            onTap: () => context.pushNamed('/card_with_the_word'),
           ),
           _MainPageElementItem(
             title: 'things from house',
-            leading: Icon(Icons.house, color: Colors.white),
+            leading: const Icon(Icons.house, color: Colors.white),
+            onTap: () => context.pushNamed('/card_with_the_word'),
           )
         ],
       ),

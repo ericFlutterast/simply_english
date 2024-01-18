@@ -14,6 +14,8 @@ class AppRoot extends StatefulWidget {
 
 class _AppRootState extends State<AppRoot> {
   int _currentSelectedIndex = 0;
+  bool _visibility = true;
+
   final List<(IconData icon, String lable)> _navbarItemsData = [
     (Icons.home, 'Home'),
     (Icons.book, 'Vocabularity'),
@@ -35,34 +37,37 @@ class _AppRootState extends State<AppRoot> {
     return Scaffold(
       body: widget.child,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        decoration: BoxDecoration(
-          color: context.theme.appColors.grayscale.g0,
-          border: Border.all(color: context.theme.appColors.grayscale.g5),
-          borderRadius: const BorderRadius.all(Radius.circular(24)),
-          boxShadow: [
-            BoxShadow(
-              color: context.theme.appColors.grayscale.g0,
-              offset: const Offset(0, 20),
-              blurRadius: 40,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(
-            _navbarItemsData.length,
-            (index) => GestureDetector(
-              onTap: () => setState(() {
-                _getOtherTabs(_screensPath[index]);
-                _currentSelectedIndex = index;
-              }),
-              child: _NavbarItemWidget(
-                iconData: _navbarItemsData[index].$1,
-                label: _navbarItemsData[index].$2,
-                isSelected: _currentSelectedIndex == index,
+      floatingActionButton: Visibility.maintain(
+        visible: _visibility,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color: context.theme.appColors.grayscale.g0,
+            border: Border.all(color: context.theme.appColors.grayscale.g5),
+            borderRadius: const BorderRadius.all(Radius.circular(24)),
+            boxShadow: [
+              BoxShadow(
+                color: context.theme.appColors.grayscale.g0,
+                offset: const Offset(0, 20),
+                blurRadius: 40,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              _navbarItemsData.length,
+              (index) => GestureDetector(
+                onTap: () => setState(() {
+                  _getOtherTabs(_screensPath[index]);
+                  _currentSelectedIndex = index;
+                }),
+                child: _NavbarItemWidget(
+                  iconData: _navbarItemsData[index].$1,
+                  label: _navbarItemsData[index].$2,
+                  isSelected: _currentSelectedIndex == index,
+                ),
               ),
             ),
           ),
