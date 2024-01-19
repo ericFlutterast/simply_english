@@ -180,7 +180,7 @@ class CardWithTheWord extends StatelessWidget {
                     color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
                   ),
-                  child: const InputWordField(),
+                  child: const _SelectTheRigthWord(),
                 ),
               )
             ],
@@ -244,12 +244,94 @@ class InputWordField extends StatelessWidget {
   }
 }
 
-class _SelectTheRigthBord extends StatelessWidget {
-  const _SelectTheRigthBord({super.key});
+class _SelectTheRigthWord extends StatelessWidget {
+  const _SelectTheRigthWord();
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Material(
+      color: Colors.transparent,
+      child: Column(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      print('1');
+                    },
+                    child: Center(
+                      child: Text(
+                        'some response',
+                        style: context.theme.appTextStyle.title,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  color: context.theme.appColors.grayscale.g5,
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      print('2');
+                    },
+                    child: Center(
+                      child: Text(
+                        'some response',
+                        style: context.theme.appTextStyle.title,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            height: 1,
+            color: context.theme.appColors.grayscale.g5,
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      print('3');
+                    },
+                    child: Center(
+                      child: Text(
+                        'some response',
+                        style: context.theme.appTextStyle.title,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  color: context.theme.appColors.grayscale.g5,
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      print('4');
+                    },
+                    child: Center(
+                      child: Text(
+                        'some response',
+                        style: context.theme.appTextStyle.title,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -285,7 +367,7 @@ class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with
 
   @override
   Widget build(BuildContext context) {
-    //_animationController.forward();
+    _animationController.forward();
 
     return Expanded(
       child: Center(
