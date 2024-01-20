@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:simply_english/src/config/app_theme/app_theme_provider.dart";
-import "package:simply_english/src/config/app_theme/theme/theme.dart";
+import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/card_widget.dart";
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/input_word_field.dart";
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/select_the_rigth_word.dart";
 
@@ -15,7 +15,6 @@ class CardWithTheWord extends StatelessWidget {
     //final heigth = MediaQuery.of(context).size.height;
     const int wordLength = 12;
     const String translateForCurrentWord = 'Слово';
-
     bool tempValue = false;
 
     return Scaffold(
@@ -65,7 +64,7 @@ class CardWithTheWord extends StatelessWidget {
                         ),
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          width: 0, // (width - 32) / (wordLength + 4),
+                          width: 0, // (width - 32) / (wor dLength + 4),
                           height: 5,
                           decoration: BoxDecoration(
                             color: appTheme.appColors.status.success,
@@ -77,101 +76,9 @@ class CardWithTheWord extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 flex: 2,
-                child: Container(
-                  padding: EdgeInsets.all(appTheme.relativeSize.contentPadding),
-                  decoration: BoxDecoration(
-                    color: appTheme.appColors.grayscale.g2,
-                    borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                              color: tempValue ? appTheme.appColors.grayscale.g4 : appTheme.appColors.status.success,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          SizedBox(width: appTheme.relativeSize.contentPadding),
-                          Expanded(
-                            child: Text(
-                              'New word',
-                              style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.white,
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.more_horiz,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: appTheme.relativeSize.contentPadding,
-                          top: appTheme.relativeSize.contentPadding * 2,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Name of dictionary',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
-                                ),
-                                Text(
-                                  'Word',
-                                  style: appTheme.appTextStyle.display2.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  '[Transcription]',
-                                  maxLines: 2,
-                                  style: appTheme.appTextStyle.display1,
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: appTheme.relativeSize.contentPadding / 2),
-                              child: const Icon(
-                                Icons.play_arrow,
-                                color: Colors.white,
-                                size: 45,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //перевод
-                      _ShowTranslateTextWidget(
-                        translateForCurrentWord: translateForCurrentWord,
-                        appTheme: appTheme,
-                        width: width,
-                      )
-                    ],
-                  ),
-                ),
+                child: TempWrap(),
               ),
               Expanded(
                 flex: 1,
@@ -182,63 +89,10 @@ class CardWithTheWord extends StatelessWidget {
                     color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
                   ),
-                  child: true ? const SelectTheRigthWord() : InputWordField(),
+                  child: true ? SelectTheRigthWord() : InputWordField(),
                 ),
               )
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ShowTranslateTextWidget extends StatefulWidget {
-  const _ShowTranslateTextWidget({
-    required this.translateForCurrentWord,
-    required this.appTheme,
-    required this.width,
-  });
-
-  final String translateForCurrentWord;
-  final AppTheme appTheme;
-  final double width;
-
-  @override
-  State<_ShowTranslateTextWidget> createState() => _ShowTranslateTextWidgetState();
-}
-
-class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        milliseconds: 300,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //_animationController.forward();
-
-    return Expanded(
-      child: Center(
-        child: FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-          child: Text(
-            widget.translateForCurrentWord,
-            textAlign: TextAlign.center,
-            maxLines: 5,
-            style: widget.appTheme.appTextStyle.display3.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: widget.translateForCurrentWord.length < 20 ? widget.width / 10 : widget.width / 12,
-            ),
           ),
         ),
       ),
