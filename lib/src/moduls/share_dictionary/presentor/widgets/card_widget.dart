@@ -278,6 +278,7 @@ class _ShowTranslateTextWidget extends StatefulWidget {
 
 class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  bool _isShow = false;
 
   @override
   void initState() {
@@ -293,19 +294,30 @@ class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with
 
   @override
   Widget build(BuildContext context) {
-    //_animationController.forward();
-
     return Expanded(
-      child: Center(
-        child: FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-          child: Text(
-            widget.translateForCurrentWord,
-            textAlign: TextAlign.center,
-            maxLines: 5,
-            style: widget.appTheme.appTextStyle.display3.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: widget.translateForCurrentWord.length < 20 ? widget.width / 10 : widget.width / 12,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            if (_isShow) {
+              _animationController.reset();
+              _isShow = false;
+            } else {
+              _animationController.forward();
+              _isShow = true;
+            }
+          });
+        },
+        child: Center(
+          child: FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+            child: Text(
+              widget.translateForCurrentWord,
+              textAlign: TextAlign.center,
+              maxLines: 5,
+              style: widget.appTheme.appTextStyle.display3.copyWith(
+                fontWeight: FontWeight.w700,
+                fontSize: widget.translateForCurrentWord.length < 20 ? widget.width / 10 : widget.width / 12,
+              ),
             ),
           ),
         ),

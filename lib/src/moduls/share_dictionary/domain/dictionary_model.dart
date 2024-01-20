@@ -3,7 +3,7 @@ abstract class DictionaryModel {
     'sat': 'cидел',
     'traffic jam': 'aвтомобильная пробка',
     'steering wheel': 'руль',
-    'fell': 'упфл',
+    'fell': 'упал',
     'weirdos': 'чудаки',
     'processing': 'обработка',
     'treatment': 'лечить',
@@ -13,7 +13,7 @@ abstract class DictionaryModel {
     'excitedly': 'взволнованно',
     'together': 'вместе',
     'than': 'чем, кроме',
-    'wearing': 'новение (одежды)',
+    'wearing': 'ношение (одежды)',
   };
 
   static int dictionaryLength = constDictionary.length;
