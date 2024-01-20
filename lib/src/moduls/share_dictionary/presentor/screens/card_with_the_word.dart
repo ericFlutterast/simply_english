@@ -2,21 +2,33 @@ import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:simply_english/src/config/app_theme/app_theme_provider.dart";
 import "package:simply_english/src/config/app_theme/theme/theme.dart";
+import "package:simply_english/src/moduls/share_dictionary/domain/dictionary_model.dart";
+
+import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/card_widget.dart";
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/input_word_field.dart";
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/select_the_rigth_word.dart";
 
-class CardWithTheWord extends StatelessWidget {
+class CardWithTheWord extends StatefulWidget {
   const CardWithTheWord({super.key});
+
+  @override
+  State<CardWithTheWord> createState() => CardWithTheWordState();
+}
+
+class CardWithTheWordState extends State<CardWithTheWord> {
+  List<Widget> _remapingDictionary() {
+    return DictionaryModel.constDictionary.keys.map((key) {
+      return CardWidget(
+        isFront: DictionaryModel.constDictionary.keys.last == key,
+        word: key,
+        translatingWord: DictionaryModel.constDictionary[key] ?? '',
+      );
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     final appTheme = context.theme;
-    final width = MediaQuery.of(context).size.width;
-    //final heigth = MediaQuery.of(context).size.height;
-    const int wordLength = 12;
-    const String translateForCurrentWord = 'Слово';
-
-    bool tempValue = false;
 
     return Scaffold(
       backgroundColor: appTheme.appColors.grayscale.g0,
@@ -52,126 +64,30 @@ class CardWithTheWord extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
-                    wordLength,
-                    (index) => Stack(
-                      children: [
-                        Container(
-                          width: (width - 32) / (wordLength + 4),
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: appTheme.appColors.grayscale.g4,
-                            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
-                          ),
-                        ),
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          width: 0, // (width - 32) / (wordLength + 4),
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: appTheme.appColors.status.success,
-                            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
-                          ),
-                        ),
-                      ],
-                    ),
+                    DictionaryModel.dictionaryLength,
+                    (index) {
+                      final itemWeigth =
+                          (MediaQuery.of(context).size.width - 32) / (DictionaryModel.dictionaryLength + 4);
+                      final amoutOfSelectItem =
+                          DictionaryModel.dictionaryLength - DictionaryModel.constDictionary.length;
+                      if (index < amoutOfSelectItem) {
+                        return IndicatorItem(
+                          itemWeigth: itemWeigth,
+                          isSelect: true,
+                        );
+                      }
+
+                      return IndicatorItem(
+                        itemWeigth: itemWeigth,
+                        isSelect: false,
+                      );
+                    },
                   ),
                 ),
               ),
               Expanded(
                 flex: 2,
-                child: Container(
-                  padding: EdgeInsets.all(appTheme.relativeSize.contentPadding),
-                  decoration: BoxDecoration(
-                    color: appTheme.appColors.grayscale.g2,
-                    borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                              color: tempValue ? appTheme.appColors.grayscale.g4 : appTheme.appColors.status.success,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          SizedBox(width: appTheme.relativeSize.contentPadding),
-                          Expanded(
-                            child: Text(
-                              'New word',
-                              style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.white,
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.more_horiz,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: appTheme.relativeSize.contentPadding,
-                          top: appTheme.relativeSize.contentPadding * 2,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Name of dictionary',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: appTheme.appTextStyle.body2.copyWith(color: Colors.white60),
-                                ),
-                                Text(
-                                  'Word',
-                                  style: appTheme.appTextStyle.display2.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  '[Transcription]',
-                                  maxLines: 2,
-                                  style: appTheme.appTextStyle.display1,
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: appTheme.relativeSize.contentPadding / 2),
-                              child: const Icon(
-                                Icons.play_arrow,
-                                color: Colors.white,
-                                size: 45,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //перевод
-                      _ShowTranslateTextWidget(
-                        translateForCurrentWord: translateForCurrentWord,
-                        appTheme: appTheme,
-                        width: width,
-                      )
-                    ],
-                  ),
-                ),
+                child: Stack(children: _remapingDictionary()),
               ),
               Expanded(
                 flex: 1,
@@ -182,7 +98,7 @@ class CardWithTheWord extends StatelessWidget {
                     color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
                   ),
-                  child: true ? const SelectTheRigthWord() : InputWordField(),
+                  child: false ? SelectTheRigthWord() : InputWordField(),
                 ),
               )
             ],
@@ -193,55 +109,45 @@ class CardWithTheWord extends StatelessWidget {
   }
 }
 
-class _ShowTranslateTextWidget extends StatefulWidget {
-  const _ShowTranslateTextWidget({
-    required this.translateForCurrentWord,
-    required this.appTheme,
-    required this.width,
+class IndicatorItem extends StatefulWidget {
+  const IndicatorItem({
+    super.key,
+    required this.isSelect,
+    required this.itemWeigth,
   });
 
-  final String translateForCurrentWord;
-  final AppTheme appTheme;
-  final double width;
+  final double itemWeigth;
+  final bool isSelect;
 
   @override
-  State<_ShowTranslateTextWidget> createState() => _ShowTranslateTextWidgetState();
+  State<IndicatorItem> createState() => _IndicatorItemState();
 }
 
-class _ShowTranslateTextWidgetState extends State<_ShowTranslateTextWidget> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        milliseconds: 300,
-      ),
-    );
-  }
-
+class _IndicatorItemState extends State<IndicatorItem> {
   @override
   Widget build(BuildContext context) {
-    //_animationController.forward();
+    final AppTheme appTheme = context.theme;
 
-    return Expanded(
-      child: Center(
-        child: FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-          child: Text(
-            widget.translateForCurrentWord,
-            textAlign: TextAlign.center,
-            maxLines: 5,
-            style: widget.appTheme.appTextStyle.display3.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: widget.translateForCurrentWord.length < 20 ? widget.width / 10 : widget.width / 12,
-            ),
+    return Stack(
+      children: [
+        Container(
+          width: widget.itemWeigth,
+          height: 5,
+          decoration: BoxDecoration(
+            color: appTheme.appColors.grayscale.g4,
+            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
           ),
         ),
-      ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: widget.isSelect ? widget.itemWeigth : 0,
+          height: 5,
+          decoration: BoxDecoration(
+            color: appTheme.appColors.status.success,
+            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
+          ),
+        ),
+      ],
     );
   }
 }
