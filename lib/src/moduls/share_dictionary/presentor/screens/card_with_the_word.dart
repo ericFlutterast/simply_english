@@ -1,21 +1,24 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:simply_english/src/config/app_theme/app_theme_provider.dart";
+import "package:simply_english/src/config/app_theme/theme/theme.dart";
+import "package:simply_english/src/moduls/share_dictionary/domain/dictionary_model.dart";
+
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/card_widget.dart";
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/input_word_field.dart";
 import "package:simply_english/src/moduls/share_dictionary/presentor/widgets/select_the_rigth_word.dart";
 
-class CardWithTheWord extends StatelessWidget {
+class CardWithTheWord extends StatefulWidget {
   const CardWithTheWord({super.key});
 
   @override
+  State<CardWithTheWord> createState() => CardWithTheWordState();
+}
+
+class CardWithTheWordState extends State<CardWithTheWord> {
+  @override
   Widget build(BuildContext context) {
     final appTheme = context.theme;
-    final width = MediaQuery.of(context).size.width;
-    //final heigth = MediaQuery.of(context).size.height;
-    const int wordLength = 12;
-    const String translateForCurrentWord = 'Слово';
-    bool tempValue = false;
 
     return Scaffold(
       backgroundColor: appTheme.appColors.grayscale.g0,
@@ -51,34 +54,37 @@ class CardWithTheWord extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
-                    wordLength,
-                    (index) => Stack(
-                      children: [
-                        Container(
-                          width: (width - 32) / (wordLength + 4),
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: appTheme.appColors.grayscale.g4,
-                            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
-                          ),
-                        ),
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          width: 0, // (width - 32) / (wor dLength + 4),
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: appTheme.appColors.status.success,
-                            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
-                          ),
-                        ),
-                      ],
-                    ),
+                    DictionaryModel.dictionaryLength,
+                    (index) {
+                      final itemWeigth =
+                          (MediaQuery.of(context).size.width - 32) / (DictionaryModel.dictionaryLength + 4);
+                      final amoutOfSelectItem =
+                          DictionaryModel.dictionaryLength - DictionaryModel.constDictionary.length;
+                      if (index < amoutOfSelectItem) {
+                        return IndicatorItem(
+                          itemWeigth: itemWeigth,
+                          isSelect: true,
+                        );
+                      }
+
+                      return IndicatorItem(
+                        itemWeigth: itemWeigth,
+                        isSelect: false,
+                      );
+                    },
                   ),
                 ),
               ),
-              const Expanded(
+              Expanded(
                 flex: 2,
-                child: TempWrap(),
+                child: Stack(
+                  children: DictionaryModel.constDictionary
+                      .map((word) => CardWidget(
+                            word: word,
+                            isFront: DictionaryModel.constDictionary.last == word,
+                          ))
+                      .toList(),
+                ),
               ),
               Expanded(
                 flex: 1,
@@ -89,13 +95,56 @@ class CardWithTheWord extends StatelessWidget {
                     color: appTheme.appColors.grayscale.g2,
                     borderRadius: BorderRadius.circular(appTheme.relativeSize.borderRadius),
                   ),
-                  child: true ? SelectTheRigthWord() : InputWordField(),
+                  child: false ? SelectTheRigthWord() : InputWordField(),
                 ),
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class IndicatorItem extends StatefulWidget {
+  const IndicatorItem({
+    super.key,
+    required this.isSelect,
+    required this.itemWeigth,
+  });
+
+  final double itemWeigth;
+  final bool isSelect;
+
+  @override
+  State<IndicatorItem> createState() => _IndicatorItemState();
+}
+
+class _IndicatorItemState extends State<IndicatorItem> {
+  @override
+  Widget build(BuildContext context) {
+    final AppTheme appTheme = context.theme;
+
+    return Stack(
+      children: [
+        Container(
+          width: widget.itemWeigth,
+          height: 5,
+          decoration: BoxDecoration(
+            color: appTheme.appColors.grayscale.g4,
+            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
+          ),
+        ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: widget.isSelect ? widget.itemWeigth : 0,
+          height: 5,
+          decoration: BoxDecoration(
+            color: appTheme.appColors.status.success,
+            borderRadius: BorderRadius.all(Radius.circular(appTheme.relativeSize.borderRadius)),
+          ),
+        ),
+      ],
     );
   }
 }

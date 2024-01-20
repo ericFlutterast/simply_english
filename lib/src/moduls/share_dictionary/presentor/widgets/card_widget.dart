@@ -3,32 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:simply_english/src/config/app_theme/app_theme_provider.dart';
 import 'package:simply_english/src/config/app_theme/theme/theme.dart';
+import 'package:simply_english/src/moduls/share_dictionary/domain/dictionary_model.dart';
+import 'package:simply_english/src/moduls/share_dictionary/presentor/screens/card_with_the_word.dart';
 
 enum AnswerStatus { correctAnswer, wrongAnswer }
-
-List<String> _listOfWords = [
-  'sat',
-  'traffic jam',
-  'steering wheel',
-  'fell',
-  'weirdos',
-];
-
-class TempWrap extends StatelessWidget {
-  const TempWrap({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: _listOfWords
-          .map((word) => CardWidget(
-                word: word,
-                isFront: _listOfWords.last == word,
-              ))
-          .toList(),
-    );
-  }
-}
 
 class CardWidget extends StatefulWidget {
   final String word;
@@ -106,12 +84,11 @@ class _CardWithWordState extends State<CardWidget> {
 
   AnswerStatus? _getStatus() {
     final x = _position.dx;
-    print(x);
 
     final status = switch (x) {
       >= 100 => AnswerStatus.correctAnswer,
       <= -100 => AnswerStatus.wrongAnswer,
-      _ => throw Exception(),
+      _ => null,
     };
 
     return status;
@@ -128,11 +105,15 @@ class _CardWithWordState extends State<CardWidget> {
   }
 
   Future _nextCard() async {
-    if (_listOfWords.isEmpty) return;
+    if (DictionaryModel.constDictionary.isEmpty) return;
 
-    await Future.delayed(const Duration(milliseconds: 200));
-    _listOfWords.removeLast();
-    //_endPosition();
+    await Future.delayed(const Duration(milliseconds: 200)).then((value) {
+      DictionaryModel.constDictionary.removeLast();
+      final state = context.findAncestorStateOfType<CardWithTheWordState>();
+      setState(() {
+        state!.setState(() {});
+      });
+    });
   }
 
   Widget buildFrontCard() {

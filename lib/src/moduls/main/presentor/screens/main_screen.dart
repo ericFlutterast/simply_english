@@ -167,16 +167,16 @@ class _DictionaryFromVocabularity extends StatelessWidget {
           _MainPageElementItem(
               title: 'Nature',
               leading: const Icon(Icons.nature, color: Colors.white),
-              onTap: () => context.pushNamed('/card_with_the_word')),
+              onTap: () => context.pushNamed('card_with_the_word')),
           _MainPageElementItem(
             title: 'Harry Potter',
             leading: const Icon(Icons.clear, color: Colors.white),
-            onTap: () => context.pushNamed('/card_with_the_word'),
+            onTap: () => context.pushNamed('card_with_the_word'),
           ),
           _MainPageElementItem(
             title: 'things from house',
             leading: const Icon(Icons.house, color: Colors.white),
-            onTap: () => context.pushNamed('/card_with_the_word'),
+            onTap: () => context.pushNamed('card_with_the_word'),
           )
         ],
       ),
