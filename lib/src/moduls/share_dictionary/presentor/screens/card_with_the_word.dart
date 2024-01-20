@@ -16,6 +16,16 @@ class CardWithTheWord extends StatefulWidget {
 }
 
 class CardWithTheWordState extends State<CardWithTheWord> {
+  List<Widget> _remapingDictionary() {
+    return DictionaryModel.constDictionary.keys.map((key) {
+      return CardWidget(
+        isFront: DictionaryModel.constDictionary.keys.last == key,
+        word: key,
+        translatingWord: DictionaryModel.constDictionary[key] ?? '',
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTheme = context.theme;
@@ -77,14 +87,7 @@ class CardWithTheWordState extends State<CardWithTheWord> {
               ),
               Expanded(
                 flex: 2,
-                child: Stack(
-                  children: DictionaryModel.constDictionary
-                      .map((word) => CardWidget(
-                            word: word,
-                            isFront: DictionaryModel.constDictionary.last == word,
-                          ))
-                      .toList(),
-                ),
+                child: Stack(children: _remapingDictionary()),
               ),
               Expanded(
                 flex: 1,

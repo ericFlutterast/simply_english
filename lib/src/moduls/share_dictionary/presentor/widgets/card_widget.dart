@@ -9,13 +9,14 @@ import 'package:simply_english/src/moduls/share_dictionary/presentor/screens/car
 enum AnswerStatus { correctAnswer, wrongAnswer }
 
 class CardWidget extends StatefulWidget {
-  final String word;
+  final String word, translatingWord;
   final bool isFront;
 
   const CardWidget({
     super.key,
     required this.word,
     required this.isFront,
+    required this.translatingWord,
   });
 
   @override
@@ -108,7 +109,7 @@ class _CardWithWordState extends State<CardWidget> {
     if (DictionaryModel.constDictionary.isEmpty) return;
 
     await Future.delayed(const Duration(milliseconds: 200)).then((value) {
-      DictionaryModel.constDictionary.removeLast();
+      DictionaryModel.constDictionary.remove(widget.word);
       final state = context.findAncestorStateOfType<CardWithTheWordState>();
       setState(() {
         state!.setState(() {});
@@ -145,15 +146,19 @@ class _CardWithWordState extends State<CardWidget> {
   }
 
   Widget buildCard() {
-    return _CardWord(title: widget.word);
+    return _CardWord(
+      title: widget.word,
+      translatingWord: widget.translatingWord,
+    );
   }
 }
 
 class _CardWord extends StatelessWidget {
-  final String title;
+  final String title, translatingWord;
 
   const _CardWord({
     required this.title,
+    required this.translatingWord,
   });
 
   @override
@@ -246,7 +251,7 @@ class _CardWord extends StatelessWidget {
           ),
           //перевод
           _ShowTranslateTextWidget(
-            translateForCurrentWord: 'Слово',
+            translateForCurrentWord: translatingWord,
             appTheme: appTheme,
             width: MediaQuery.of(context).size.width,
           )
