@@ -8,6 +8,17 @@ import 'package:simply_english/src/moduls/share_dictionary/presentor/screens/car
 
 enum AnswerStatus { correctAnswer, wrongAnswer }
 
+//TODO:
+enum numbers {
+  ten(10),
+  twenty(20),
+  sirty(30),
+  forty(40);
+
+  const numbers(this.number);
+  final int number;
+}
+
 class CardWidget extends StatefulWidget {
   final String word, translatingWord;
   final bool isFront;
