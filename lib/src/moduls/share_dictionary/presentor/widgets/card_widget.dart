@@ -19,6 +19,8 @@ enum numbers {
   final int number;
 }
 
+final c = 30;
+
 class CardWidget extends StatefulWidget {
   final String word, translatingWord;
   final bool isFront;
